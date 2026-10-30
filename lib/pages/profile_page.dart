@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
           const Icon(Icons.check_circle, color: Colors.green, size: 60),
           const SizedBox(height: 10),
           const Text(
-            'Selamat Datang!',
+            'Smooth Ride with a Cutie',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 15),

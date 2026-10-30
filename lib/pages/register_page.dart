@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Untuk format input No. HP
 import '../models/user_model.dart';
-import 'home_page.dart';
+import 'navbar.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
