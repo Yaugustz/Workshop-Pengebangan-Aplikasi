@@ -65,4 +65,14 @@ class DatabaseHelper {
     }
     return null;
   }
+  // Fungsi untuk memperbarui data user berdasarkan ID
+  Future<int> updateUser(UserModel user) async {
+    final db = await instance.database;
+    return await db.update(
+      'users',
+      user.toMap(),
+      where: 'id = ?',
+      whereArgs: [user.id],
+    );
+  }
 }
