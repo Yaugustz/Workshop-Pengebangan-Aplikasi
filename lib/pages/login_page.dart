@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
 import '../models/user_model.dart';
+import '../database/database_helper.dart'; // <-- Tambahkan import ini
 import 'navbar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,23 +15,22 @@ class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _login() {
-    String inputUsername = _usernameController.text;
-    String inputPassword = _passwordController.text;
+  // UBAH MENJADI ASYNC UNTUK CEK DATABASE
+  Future<void> _login() async {
+    String inputUsername = _usernameController.text.trim();
+    String inputPassword = _passwordController.text.trim();
 
-    try {
-      // CEK IN-MEMORY: Cari user yang cocok
-      UserModel loggedInUser = UserModel.registeredUsers.firstWhere(
-        (user) => user.username == inputUsername && user.password == inputPassword,
-      );
+    // Panggil fungsi login dari DatabaseHelper
+    UserModel? loggedInUser = await DatabaseHelper.instance.loginUser(inputUsername, inputPassword);
 
-      // Jika ketemu, lempar ke HomePage
+    if (loggedInUser != null) {
+      // Jika user ditemukan di database, masuk ke HomePage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage(user: loggedInUser)),
       );
-    } catch (e) {
-      // Jika firstWhere gagal menemukan data, munculkan peringatan
+    } else {
+      // Jika tidak ditemukan / salah
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Username atau Password salah / belum terdaftar!')),
       );
@@ -62,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text('Login'),
             ),
             const SizedBox(height: 16),
-            // Tombol ini yang akan mengarahkan ke halaman Register
             TextButton(
               onPressed: () {
                 Navigator.push(
